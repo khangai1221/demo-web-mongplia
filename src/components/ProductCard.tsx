@@ -1,18 +1,16 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Battery, Gauge, Zap as ZapIcon, ShoppingCart, Eye } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import type { Product } from "@/data/products";
 import { formatMNT } from "@/lib/format";
 import { useCart } from "@/stores/cart";
 import { toast } from "sonner";
-import { useState } from "react";
 
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const add = useCart((s) => s.add);
   const price = product.discountPrice ?? product.price;
   const hasDiscount = !!product.discountPrice;
   const outOfStock = product.stock <= 0;
-  const [hovered, setHovered] = useState(false);
 
   const discountPercent = hasDiscount
     ? Math.round(((product.price - product.discountPrice!) / product.price) * 100)
@@ -24,53 +22,34 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="group bg-card border border-border/60 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-300 glow-card"
+      className="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-gray-300 transition-all duration-200"
     >
-      <Link to="/products/$slug" params={{ slug: product.slug }} className="block relative">
-        <div className="relative aspect-square bg-gradient-to-br from-secondary/80 to-background overflow-hidden">
+      <Link to="/products/$slug" params={{ slug: product.slug }} className="block">
+        <div className="relative aspect-square bg-gray-50 overflow-hidden">
           <img
             src={product.images[0]}
             alt={product.name}
             loading="lazy"
-            className="w-full h-full object-contain p-3 sm:p-5 group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-contain p-4 sm:p-5 group-hover:scale-105 transition-transform duration-500"
           />
 
           {/* Badges */}
           <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1">
             {product.isNew && (
-              <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-bold rounded-full bg-primary text-primary-foreground tracking-wide">
-                NEW
+              <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] font-semibold rounded-md bg-gray-900 text-white">
+                Нин
               </span>
             )}
             {hasDiscount && (
-              <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-bold rounded-full bg-destructive text-destructive-foreground tracking-wide">
+              <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] font-semibold rounded-md bg-red-500 text-white">
                 -{discountPercent}%
               </span>
             )}
-            {product.isBestSeller && (
-              <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-bold rounded-full bg-amber-500/90 text-black tracking-wide">
-                BEST
-              </span>
-            )}
-          </div>
-
-          {/* Quick view overlay - desktop only */}
-          <div
-            className={`hidden sm:flex absolute inset-0 bg-black/40 backdrop-blur-[2px] items-center justify-center transition-opacity duration-300 ${
-              hovered ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white text-sm font-medium">
-              <Eye className="w-4 h-4" />
-              Quick View
-            </span>
           </div>
 
           {outOfStock && (
-            <div className="absolute inset-0 bg-background/70 grid place-items-center backdrop-blur-sm">
-              <span className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-foreground text-background text-xs sm:text-sm font-semibold">
+            <div className="absolute inset-0 bg-white/80 grid place-items-center">
+              <span className="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold">
                 Дууссан
               </span>
             </div>
@@ -78,54 +57,27 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
         </div>
       </Link>
 
-      <div className="p-3 sm:p-4 md:p-5 flex flex-col gap-2 sm:gap-3">
-        <div>
-          <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-muted-foreground/70 mb-0.5 sm:mb-1">
-            {product.categoryName}
-          </div>
-          <Link
-            to="/products/$slug"
-            params={{ slug: product.slug }}
-            className="font-semibold leading-tight hover:text-primary transition-colors line-clamp-1 text-sm sm:text-base"
-          >
-            {product.name}
-          </Link>
-          <p className="text-[11px] sm:text-xs text-muted-foreground/60 mt-0.5 sm:mt-1 line-clamp-1">
-            {product.shortDescription}
-          </p>
+      <div className="p-3 sm:p-4">
+        <div className="text-[11px] text-gray-400 uppercase tracking-wider mb-0.5">
+          {product.categoryName}
         </div>
+        <Link
+          to="/products/$slug"
+          params={{ slug: product.slug }}
+          className="font-medium text-gray-900 hover:text-blue-600 transition-colors line-clamp-1 text-sm"
+        >
+          {product.name}
+        </Link>
+        <p className="text-xs text-gray-400 mt-0.5 line-clamp-1 mb-3">{product.shortDescription}</p>
 
-        {/* Spec icons */}
-        {product.specs && product.specs.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
-            {product.specs.map((spec) => (
-              <span
-                key={spec.label}
-                className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md bg-primary/10 text-primary text-[9px] sm:text-[10px] font-medium"
-              >
-                {spec.label === "Явах зай" && <Battery className="w-2 h-2 sm:w-2.5 sm:h-2.5" />}
-                {spec.label === "Хурд" && <Gauge className="w-2 h-2 sm:w-2.5 sm:h-2.5" />}
-                {spec.label === "Мотор" && <ZapIcon className="w-2 h-2 sm:w-2.5 sm:h-2.5" />}
-                {spec.label === "Батерей" && <ZapIcon className="w-2 h-2 sm:w-2.5 sm:h-2.5" />}
-                {!["Явах зай", "Хурд", "Мотор", "Батерей"].includes(spec.label) && (
-                  <ZapIcon className="w-2 h-2 sm:w-2.5 sm:h-2.5" />
-                )}
-                {spec.label === "Явах зай" ? spec.value : spec.value}
-              </span>
-            ))}
-          </div>
-        )}
-
-        <div className="flex items-end justify-between gap-2 mt-auto">
-          <div className="flex flex-col min-w-0">
+        <div className="flex items-end justify-between gap-2">
+          <div className="flex flex-col">
             {hasDiscount && (
-              <span className="text-[10px] sm:text-[11px] text-muted-foreground/50 line-through">
+              <span className="text-[11px] text-gray-300 line-through">
                 {formatMNT(product.price)}
               </span>
             )}
-            <span className="font-display font-bold text-sm sm:text-lg md:text-xl text-foreground">
-              {formatMNT(price)}
-            </span>
+            <span className="font-semibold text-base text-gray-900">{formatMNT(price)}</span>
           </div>
           <button
             onClick={(e) => {
@@ -135,10 +87,10 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
               toast.success(product.name + " сагсанд нэмэгдлээ");
             }}
             disabled={outOfStock}
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary text-primary-foreground grid place-items-center hover:bg-primary/90 active:scale-95 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+            className="w-9 h-9 rounded-lg bg-gray-900 text-white grid place-items-center hover:bg-gray-800 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
             aria-label="Сагсанд нэмэх"
           >
-            <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <ShoppingCart className="w-4 h-4" />
           </button>
         </div>
       </div>
