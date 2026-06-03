@@ -34,12 +34,12 @@ function CartPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <h1 className="font-display text-3xl font-bold mb-8">Таны сагс</h1>
+    <div className="container mx-auto px-4 py-6 sm:py-10">
+      <h1 className="font-display text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Таны сагс</h1>
 
       {/* Free shipping indicator */}
       {freeDeliveryRemaining > 0 && (
-        <div className="mb-6 p-4 rounded-2xl bg-primary/5 border border-primary/20 text-sm flex items-center gap-3">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 rounded-2xl bg-primary/5 border border-primary/20 text-xs sm:text-sm flex items-center gap-3">
           <Truck className="w-5 h-5 text-primary shrink-0" />
           <span>
             <strong>{formatMNT(freeDeliveryRemaining)}</strong> үнэтэй бүтээгдэхүүн нэмбэл хүргэлт
@@ -48,23 +48,23 @@ function CartPage() {
         </div>
       )}
       {freeDeliveryRemaining === 0 && sub > 0 && (
-        <div className="mb-6 p-4 rounded-2xl bg-success/10 border border-success/20 text-sm flex items-center gap-3">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 rounded-2xl bg-success/10 border border-success/20 text-xs sm:text-sm flex items-center gap-3">
           <Truck className="w-5 h-5 text-success shrink-0" />
           <span>Хүргэлт үнэгүй! Та 500,000₮-с дээш захиалга хийсэн байна.</span>
         </div>
       )}
 
-      <div className="grid lg:grid-cols-[1fr_380px] gap-8">
+      <div className="grid lg:grid-cols-[1fr_380px] gap-6 sm:gap-8">
         <div className="space-y-3">
           {items.map((i) => (
             <div
               key={i.productId}
-              className="flex gap-4 p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/20 transition-all"
+              className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-2xl border border-border/60 bg-card hover:border-primary/20 transition-all"
             >
               <Link
                 to="/products/$slug"
                 params={{ slug: i.slug }}
-                className="w-24 h-24 rounded-xl bg-secondary/80 overflow-hidden shrink-0"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-secondary/80 overflow-hidden shrink-0"
               >
                 <img src={i.image} alt={i.name} className="w-full h-full object-contain p-2" />
               </Link>
@@ -72,73 +72,77 @@ function CartPage() {
                 <Link
                   to="/products/$slug"
                   params={{ slug: i.slug }}
-                  className="font-semibold hover:text-primary transition-colors line-clamp-1"
+                  className="font-semibold hover:text-primary transition-colors line-clamp-1 text-sm sm:text-base"
                 >
                   {i.name}
                 </Link>
-                <div className="text-sm text-muted-foreground mt-0.5">{formatMNT(i.unitPrice)}</div>
-                <div className="mt-auto flex items-center justify-between gap-4">
+                <div className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                  {formatMNT(i.unitPrice)}
+                </div>
+                <div className="mt-auto flex items-center justify-between gap-2 sm:gap-4">
                   <div className="flex items-center border border-border/60 rounded-lg bg-background">
                     <button
                       onClick={() => setQty(i.productId, i.quantity - 1)}
-                      className="w-8 h-8 grid place-items-center hover:bg-white/[0.06] transition-colors rounded-l-lg"
+                      className="w-7 h-7 sm:w-8 sm:h-8 grid place-items-center hover:bg-white/[0.06] transition-colors rounded-l-lg"
                     >
-                      <Minus className="w-3.5 h-3.5" />
+                      <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     </button>
-                    <div className="w-8 text-center text-sm font-semibold">{i.quantity}</div>
+                    <div className="w-7 sm:w-8 text-center text-xs sm:text-sm font-semibold">
+                      {i.quantity}
+                    </div>
                     <button
                       onClick={() => setQty(i.productId, i.quantity + 1)}
-                      className="w-8 h-8 grid place-items-center hover:bg-white/[0.06] transition-colors rounded-r-lg"
+                      className="w-7 h-7 sm:w-8 sm:h-8 grid place-items-center hover:bg-white/[0.06] transition-colors rounded-r-lg"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     </button>
                   </div>
-                  <div className="font-display font-bold text-lg">
+                  <div className="font-display font-bold text-sm sm:text-lg">
                     {formatMNT(i.unitPrice * i.quantity)}
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => remove(i.productId)}
-                className="w-9 h-9 rounded-lg grid place-items-center text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all shrink-0"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg grid place-items-center text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all shrink-0"
               >
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
           ))}
         </div>
 
         {/* Order summary */}
-        <aside className="h-fit p-6 rounded-2xl border border-border/60 bg-card sticky top-28 space-y-3">
-          <h3 className="font-display text-xl font-bold mb-2">Захиалгын дүн</h3>
-          <div className="flex justify-between text-sm">
+        <aside className="h-fit p-5 sm:p-6 rounded-2xl border border-border/60 bg-card sm:sticky sm:top-28 space-y-3">
+          <h3 className="font-display text-lg sm:text-xl font-bold mb-2">Захиалгын дүн</h3>
+          <div className="flex justify-between text-xs sm:text-sm">
             <span className="text-muted-foreground">Дэд дүн</span>
             <span>{formatMNT(sub)}</span>
           </div>
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-xs sm:text-sm">
             <span className="text-muted-foreground">Хүргэлтийн төлбөр</span>
             <span>{deliveryFee === 0 ? "Үнэгүй" : formatMNT(deliveryFee)}</span>
           </div>
           <div className="border-t border-border/60 my-2" />
-          <div className="flex justify-between font-display text-lg font-bold">
+          <div className="flex justify-between font-display text-base sm:text-lg font-bold">
             <span>Нийт төлбөр</span>
             <span className="text-primary">{formatMNT(total)}</span>
           </div>
           <div className="space-y-2 pt-2">
             <Link
               to="/checkout"
-              className="w-full btn-primary inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm"
+              className="w-full btn-primary inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-3.5 text-sm"
             >
               Захиалга өгөх <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/products"
-              className="block text-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="block text-center text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Үргэлжлүүлэн худалдан авах
             </Link>
           </div>
-          <div className="flex items-center gap-2 pt-3 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 pt-3 text-[11px] sm:text-xs text-muted-foreground">
             <ShieldCheck className="w-3.5 h-3.5" />
             Аюулгүй төлбөр
           </div>

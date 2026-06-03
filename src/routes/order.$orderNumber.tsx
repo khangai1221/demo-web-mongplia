@@ -24,9 +24,7 @@ export const Route = createFileRoute("/order/$orderNumber")({
   head: ({ loaderData }) =>
     loaderData
       ? {
-          meta: [
-            { title: `Захиалга ${loaderData.order.orderNumber} — Mini Motors` },
-          ],
+          meta: [{ title: `Захиалга ${loaderData.order.orderNumber} — Mini Motors` }],
         }
       : {},
   component: OrderPage,
@@ -92,8 +90,7 @@ function OrderPage() {
           Захиалга амжилттай бүртгэгдлээ
         </h1>
         <p className="text-muted-foreground">
-          Захиалгын дугаар:{" "}
-          <span className="font-bold text-foreground">{order.orderNumber}</span>
+          Захиалгын дугаар: <span className="font-bold text-foreground">{order.orderNumber}</span>
         </p>
       </div>
 
@@ -126,16 +123,15 @@ function OrderPage() {
             </div>
             <div className="border-t border-border/60 pt-2 mt-2 flex justify-between">
               <span className="text-muted-foreground">Дүн:</span>
-              <span className="font-bold text-lg text-primary">
-                {formatMNT(order.total)}
-              </span>
+              <span className="font-bold text-lg text-primary">{formatMNT(order.total)}</span>
             </div>
           </div>
 
           {/* Payment proof upload */}
           {isUnpaid && !uploaded && (
             <div className="mt-5">
-              <div className="border-2 border-dashed border-border/60 rounded-xl p-6 text-center hover:border-primary/40 transition-colors cursor-pointer"
+              <div
+                className="border-2 border-dashed border-border/60 rounded-xl p-6 text-center hover:border-primary/40 transition-colors cursor-pointer"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
@@ -194,14 +190,21 @@ function OrderPage() {
               <span className="text-muted-foreground">Төлөв</span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-warning/15 text-warning-foreground text-xs font-medium">
                 <Clock className="w-3 h-3" />
-                {order.paymentStatus === "Proof Uploaded" ? "Баталгаажуулах шатанд" : "Хүлээгдэж байна"}
+                {order.paymentStatus === "Proof Uploaded"
+                  ? "Баталгаажуулах шатанд"
+                  : "Хүлээгдэж байна"}
               </span>
             </div>
             <OrderRow label="Захиалагч" value={order.customerName} />
             <OrderRow label="Утас" value={order.customerPhone} />
             <OrderRow label="Хаяг" value={`${order.city}, ${order.district}, ${order.address}`} />
             <OrderRow label="Хүргэлт" value={order.deliveryMethod} />
-            <OrderRow label="Төлбөр" value={order.paymentMethod === "manual_bank" ? "Дансаар шилжүүлэх" : order.paymentMethod} />
+            <OrderRow
+              label="Төлбөр"
+              value={
+                order.paymentMethod === "manual_bank" ? "Дансаар шилжүүлэх" : order.paymentMethod
+              }
+            />
           </div>
         </div>
 
@@ -214,9 +217,7 @@ function OrderPage() {
                   <span className="font-medium">{item.name}</span>
                   <span className="text-muted-foreground"> × {item.quantity}</span>
                 </div>
-                <span className="font-medium">
-                  {formatMNT(item.unitPrice * item.quantity)}
-                </span>
+                <span className="font-medium">{formatMNT(item.unitPrice * item.quantity)}</span>
               </div>
             ))}
           </div>

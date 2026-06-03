@@ -15,7 +15,6 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -82,16 +81,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Mini Motors — Цахилгаан унааны онлайн дэлгүүр" },
-      { name: "description", content: "Mini Motors: цахилгаан дугуй, скүүтер, сэлбэг, дагалдах хэрэгслийн Монголын онлайн дэлгүүр." },
+      {
+        name: "description",
+        content:
+          "Mini Motors: цахилгаан дугуй, скүүтер, сэлбэг, дагалдах хэрэгслийн Монголын онлайн дэлгүүр.",
+      },
       { property: "og:title", content: "Mini Motors — Цахилгаан унааны шинэ үе" },
-      { property: "og:description", content: "Цахилгаан дугуй, скүүтер болон дагалдах хэрэгслийн онлайн дэлгүүр." },
+      {
+        property: "og:description",
+        content: "Цахилгаан дугуй, скүүтер болон дагалдах хэрэгслийн онлайн дэлгүүр.",
+      },
       { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -130,4 +139,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

@@ -25,7 +25,9 @@ function ContactPage() {
 function Info({ icon: Icon, label, value }: { icon: typeof Phone; label: string; value: string }) {
   return (
     <div className="p-5 rounded-2xl border border-border bg-card flex items-center gap-4">
-      <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary grid place-items-center"><Icon className="w-5 h-5" /></div>
+      <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary grid place-items-center">
+        <Icon className="w-5 h-5" />
+      </div>
       <div>
         <div className="text-xs text-muted-foreground">{label}</div>
         <div className="font-semibold">{value}</div>

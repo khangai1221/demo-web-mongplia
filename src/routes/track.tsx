@@ -10,24 +10,38 @@ export const Route = createFileRoute("/track")({
 });
 
 const statusColors: Record<string, string> = {
-  "New": "bg-secondary text-foreground",
+  New: "bg-secondary text-foreground",
   "Pending Payment": "bg-warning/20 text-warning-foreground",
   "Pending Verification": "bg-warning/20 text-warning-foreground",
-  "Paid": "bg-success/20 text-success",
-  "Processing": "bg-primary/20 text-primary",
+  Paid: "bg-success/20 text-success",
+  Processing: "bg-primary/20 text-primary",
   "Ready for Delivery": "bg-primary/20 text-primary",
-  "Shipped": "bg-accent/30 text-accent-foreground",
-  "Delivered": "bg-success/20 text-success",
-  "Completed": "bg-success/20 text-success",
-  "Cancelled": "bg-destructive/20 text-destructive",
+  Shipped: "bg-accent/30 text-accent-foreground",
+  Delivered: "bg-success/20 text-success",
+  Completed: "bg-success/20 text-success",
+  Cancelled: "bg-destructive/20 text-destructive",
 };
 
 const statusMn: Record<string, string> = {
-  "New": "Шинэ", "Pending Payment": "Төлбөр хүлээгдэж буй", "Pending Verification": "Баталгаажуулалт хүлээгдэж буй",
-  "Paid": "Төлөгдсөн", "Processing": "Бэлтгэгдэж буй", "Ready for Delivery": "Хүргэлтэнд бэлэн",
-  "Shipped": "Хүргэлтэнд гарсан", "Delivered": "Хүргэгдсэн", "Completed": "Дууссан", "Cancelled": "Цуцлагдсан",
-  "Unpaid": "Төлөөгүй", "Pending": "Хүлээгдэж буй", "Proof Uploaded": "Баримт ирсэн", "Failed": "Амжилтгүй", "Refunded": "Буцаагдсан",
-  "Not Started": "Эхлээгүй", "Preparing": "Бэлтгэж буй", "Ready": "Бэлэн", "Delivered ": "Хүргэгдсэн",
+  New: "Шинэ",
+  "Pending Payment": "Төлбөр хүлээгдэж буй",
+  "Pending Verification": "Баталгаажуулалт хүлээгдэж буй",
+  Paid: "Төлөгдсөн",
+  Processing: "Бэлтгэгдэж буй",
+  "Ready for Delivery": "Хүргэлтэнд бэлэн",
+  Shipped: "Хүргэлтэнд гарсан",
+  Delivered: "Хүргэгдсэн",
+  Completed: "Дууссан",
+  Cancelled: "Цуцлагдсан",
+  Unpaid: "Төлөөгүй",
+  Pending: "Хүлээгдэж буй",
+  "Proof Uploaded": "Баримт ирсэн",
+  Failed: "Амжилтгүй",
+  Refunded: "Буцаагдсан",
+  "Not Started": "Эхлээгүй",
+  Preparing: "Бэлтгэж буй",
+  Ready: "Бэлэн",
+  "Delivered ": "Хүргэгдсэн",
 };
 
 function TrackPage() {
@@ -56,7 +70,10 @@ function TrackPage() {
           placeholder="MM-000001 эсвэл 99119911"
           className="flex-1 px-4 py-3 rounded-xl border border-border bg-background"
         />
-        <button onClick={onSearch} className="px-5 py-3 rounded-xl bg-primary text-primary-foreground font-semibold inline-flex items-center gap-2">
+        <button
+          onClick={onSearch}
+          className="px-5 py-3 rounded-xl bg-primary text-primary-foreground font-semibold inline-flex items-center gap-2"
+        >
           <Search className="w-4 h-4" /> Хайх
         </button>
       </div>
@@ -71,28 +88,52 @@ function TrackPage() {
             <div>
               <div className="text-xs text-muted-foreground">Захиалгын дугаар</div>
               <div className="font-display text-2xl font-bold">{result.orderNumber}</div>
-              <div className="text-xs text-muted-foreground mt-1">{new Date(result.createdAt).toLocaleString("mn-MN")}</div>
+              <div className="text-xs text-muted-foreground mt-1">
+                {new Date(result.createdAt).toLocaleString("mn-MN")}
+              </div>
             </div>
-            <div className="font-display text-2xl font-bold text-primary">{formatMNT(result.total)}</div>
+            <div className="font-display text-2xl font-bold text-primary">
+              {formatMNT(result.total)}
+            </div>
           </div>
 
           <div className="grid sm:grid-cols-3 gap-3">
-            <StatusCard title="Захиалгын төлөв" value={statusMn[result.orderStatus] ?? result.orderStatus} className={statusColors[result.orderStatus]} />
-            <StatusCard title="Төлбөрийн төлөв" value={statusMn[result.paymentStatus] ?? result.paymentStatus} className={statusColors[result.paymentStatus] ?? "bg-secondary"} />
-            <StatusCard title="Хүргэлтийн төлөв" value={statusMn[result.deliveryStatus] ?? result.deliveryStatus} className={statusColors[result.deliveryStatus] ?? "bg-secondary"} />
+            <StatusCard
+              title="Захиалгын төлөв"
+              value={statusMn[result.orderStatus] ?? result.orderStatus}
+              className={statusColors[result.orderStatus]}
+            />
+            <StatusCard
+              title="Төлбөрийн төлөв"
+              value={statusMn[result.paymentStatus] ?? result.paymentStatus}
+              className={statusColors[result.paymentStatus] ?? "bg-secondary"}
+            />
+            <StatusCard
+              title="Хүргэлтийн төлөв"
+              value={statusMn[result.deliveryStatus] ?? result.deliveryStatus}
+              className={statusColors[result.deliveryStatus] ?? "bg-secondary"}
+            />
           </div>
 
           <div className="border-t border-border pt-4">
-            <h3 className="font-semibold mb-2 flex items-center gap-2"><Package className="w-4 h-4" /> Бүтээгдэхүүн</h3>
+            <h3 className="font-semibold mb-2 flex items-center gap-2">
+              <Package className="w-4 h-4" /> Бүтээгдэхүүн
+            </h3>
             {result.items.map((i) => (
               <div key={i.productId} className="flex justify-between text-sm py-1">
-                <span>{i.name} × {i.quantity}</span>
+                <span>
+                  {i.name} × {i.quantity}
+                </span>
                 <span className="font-medium">{formatMNT(i.unitPrice * i.quantity)}</span>
               </div>
             ))}
           </div>
 
-          <Link to="/order/$orderNumber" params={{ orderNumber: result.orderNumber }} className="block text-center text-primary underline">
+          <Link
+            to="/order/$orderNumber"
+            params={{ orderNumber: result.orderNumber }}
+            className="block text-center text-primary underline"
+          >
             Дэлгэрэнгүй харах
           </Link>
         </div>
@@ -101,11 +142,21 @@ function TrackPage() {
   );
 }
 
-function StatusCard({ title, value, className }: { title: string; value: string; className?: string }) {
+function StatusCard({
+  title,
+  value,
+  className,
+}: {
+  title: string;
+  value: string;
+  className?: string;
+}) {
   return (
     <div className="p-4 rounded-xl border border-border bg-background">
       <div className="text-xs text-muted-foreground mb-1">{title}</div>
-      <div className={`inline-block px-2 py-1 rounded-md text-xs font-semibold ${className}`}>{value}</div>
+      <div className={`inline-block px-2 py-1 rounded-md text-xs font-semibold ${className}`}>
+        {value}
+      </div>
     </div>
   );
 }

@@ -20,7 +20,12 @@ function CategoriesPage() {
         {categories.map((c) => {
           const Icon = c.icon;
           return (
-            <Link key={c.id} to="/products" search={{ category: c.slug }} className="group p-8 rounded-3xl bg-card border border-border hover:shadow-elegant hover:border-primary transition">
+            <Link
+              key={c.id}
+              to="/products"
+              search={{ category: c.slug }}
+              className="group p-8 rounded-3xl bg-card border border-border hover:shadow-elegant hover:border-primary transition"
+            >
               <div className="w-14 h-14 rounded-2xl bg-gradient-primary text-primary-foreground grid place-items-center mb-4 shadow-glow">
                 <Icon className="w-7 h-7" />
               </div>

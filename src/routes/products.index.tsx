@@ -83,8 +83,8 @@ function ProductsPage() {
   };
 
   const FiltersPanel = (
-    <div className="space-y-6">
-      <div className="mb-2">
+    <div className="space-y-5 sm:space-y-6">
+      <div className="mb-1">
         <div className="flex items-center gap-2 mb-3">
           <Search className="w-4 h-4 text-muted-foreground" />
           <span className="font-semibold text-sm">Шүүлтүүр</span>
@@ -175,24 +175,26 @@ function ProductsPage() {
   return (
     <div className="min-h-screen">
       {/* Page header */}
-      <div className="container mx-auto px-4 pt-10 pb-6">
+      <div className="container mx-auto px-4 pt-6 sm:pt-10 pb-4 sm:pb-6">
         <div className="flex items-end justify-between flex-wrap gap-3">
           <div>
-            <h1 className="font-display text-3xl md:text-4xl font-bold">Дэлгүүр</h1>
-            <p className="text-muted-foreground text-sm mt-1">{filtered.length} бүтээгдэхүүн</p>
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold">Дэлгүүр</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm mt-1">
+              {filtered.length} бүтээгдэхүүн
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setFilterOpen(true)}
-              className="lg:hidden btn-outline inline-flex items-center gap-2 px-4 py-2 text-sm"
+              className="lg:hidden btn-outline inline-flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm"
             >
-              <SlidersHorizontal className="w-4 h-4" /> Шүүлтүүр
+              <SlidersHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Шүүлтүүр
             </button>
             <div className="relative">
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="px-4 py-2 rounded-xl border border-border/60 bg-card text-sm appearance-none pr-8 cursor-pointer focus:border-primary/40 focus:outline-none"
+                className="px-3 sm:px-4 py-2 rounded-xl border border-border/60 bg-card text-xs sm:text-sm appearance-none pr-7 sm:pr-8 cursor-pointer focus:border-primary/40 focus:outline-none"
               >
                 {sortOptions.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -200,14 +202,14 @@ function ProductsPage() {
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+              <ChevronDown className="absolute right-2 sm:right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground pointer-events-none" />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 pb-16">
-        <div className="grid lg:grid-cols-[280px_1fr] gap-8">
+      <div className="container mx-auto px-4 pb-12 sm:pb-16">
+        <div className="grid lg:grid-cols-[280px_1fr] gap-6 sm:gap-8">
           <aside className="hidden lg:block">
             <div className="sticky top-28 p-5 rounded-2xl bg-card border border-border/60">
               {FiltersPanel}
@@ -220,11 +222,11 @@ function ProductsPage() {
               onClick={() => setFilterOpen(false)}
             >
               <div
-                className="absolute right-0 top-0 h-full w-80 max-w-full bg-background border-l border-border/60 p-6 overflow-y-auto"
+                className="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-background border-l border-border/60 p-5 sm:p-6 overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold">Шүүлтүүр</h3>
+                  <h3 className="font-bold text-sm sm:text-base">Шүүлтүүр</h3>
                   <button
                     onClick={() => setFilterOpen(false)}
                     className="w-8 h-8 rounded-lg grid place-items-center hover:bg-white/[0.06]"
@@ -239,11 +241,11 @@ function ProductsPage() {
 
           <div>
             {filtered.length === 0 ? (
-              <div className="text-center py-20 text-muted-foreground">
+              <div className="text-center py-16 sm:py-20 text-muted-foreground">
                 <div className="w-16 h-16 rounded-full bg-card mx-auto grid place-items-center mb-4 border border-border/60">
                   <Search className="w-6 h-6" />
                 </div>
-                <p className="mb-4">Тохирох бүтээгдэхүүн олдсонгүй.</p>
+                <p className="mb-4 text-sm sm:text-base">Тохирох бүтээгдэхүүн олдсонгүй.</p>
                 <Link
                   to="/products"
                   search={{}}
@@ -254,14 +256,16 @@ function ProductsPage() {
               </div>
             ) : (
               <>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
                   {filtered.map((p, i) => (
                     <ProductCard key={p.id} product={p} index={i} />
                   ))}
                 </div>
                 {filtered.length > 9 && (
-                  <div className="mt-10 text-center">
-                    <button className="btn-outline px-8 py-3 text-sm font-medium">Цааш үзэх</button>
+                  <div className="mt-8 sm:mt-10 text-center">
+                    <button className="btn-outline px-6 sm:px-8 py-2.5 sm:py-3 text-xs sm:text-sm font-medium">
+                      Цааш үзэх
+                    </button>
                   </div>
                 )}
               </>

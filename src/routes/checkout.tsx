@@ -2,18 +2,9 @@ import { createFileRoute, useRouter, Link } from "@tanstack/react-router";
 import { useCart } from "@/stores/cart";
 import { useOrders, type PaymentMethod } from "@/stores/orders";
 import { formatMNT, generateOrderNumber } from "@/lib/format";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { z } from "zod";
-import {
-  Check,
-  Building2,
-  Wallet,
-  Store,
-  CreditCard,
-  ArrowRight,
-  Upload,
-  FileText,
-} from "lucide-react";
+import { Check, Building2, Wallet, Store, CreditCard, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/checkout")({
@@ -96,8 +87,7 @@ function CheckoutPage() {
     );
   }
 
-  const update = (k: keyof typeof form, v: string) =>
-    setForm((f) => ({ ...f, [k]: v }));
+  const update = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   const validateStep = () => {
     if (step === 0) {
@@ -153,32 +143,34 @@ function CheckoutPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <h1 className="font-display text-3xl font-bold mb-2">Захиалга баталгаажуулах</h1>
+    <div className="container mx-auto px-4 py-6 sm:py-10">
+      <h1 className="font-display text-2xl sm:text-3xl font-bold mb-2">Захиалга баталгаажуулах</h1>
 
-      {/* Steps */}
-      <div className="flex items-center gap-2 my-8 overflow-x-auto pb-2">
+      {/* Steps - scrollable on mobile */}
+      <div className="flex items-center gap-2 my-6 sm:my-8 overflow-x-auto pb-2 scrollbar-none">
         {steps.map((s, i) => (
           <div key={s} className="flex items-center gap-2 shrink-0">
             <div
-              className={`w-8 h-8 rounded-full grid place-items-center text-sm font-bold transition-all ${
+              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full grid place-items-center text-xs sm:text-sm font-bold transition-all ${
                 i <= step
                   ? "bg-primary text-primary-foreground"
                   : "bg-card text-muted-foreground border border-border/60"
               }`}
             >
-              {i < step ? <Check className="w-4 h-4" /> : i + 1}
+              {i < step ? <Check className="w-3 h-3 sm:w-4 sm:h-4" /> : i + 1}
             </div>
-            <span className={`text-sm ${i === step ? "font-semibold" : "text-muted-foreground"}`}>
+            <span
+              className={`text-[11px] sm:text-sm ${i === step ? "font-semibold" : "text-muted-foreground"}`}
+            >
               {s}
             </span>
-            {i < steps.length - 1 && <div className="w-6 h-px bg-border/60" />}
+            {i < steps.length - 1 && <div className="w-4 sm:w-6 h-px bg-border/60" />}
           </div>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-[1fr_380px] gap-8">
-        <div className="space-y-5">
+      <div className="grid lg:grid-cols-[1fr_380px] gap-6 sm:gap-8">
+        <div className="space-y-4 sm:space-y-5">
           {step === 0 && (
             <Card title="Захиалгын мэдээлэл">
               <Field label="Овог нэр" error={errors.customerName}>
@@ -195,6 +187,7 @@ function CheckoutPage() {
                   onChange={(e) => update("customerPhone", e.target.value)}
                   className="input-field"
                   placeholder="99119911"
+                  type="tel"
                 />
               </Field>
               <Field label="Имэйл (заавал биш)" error={errors.customerEmail}>
@@ -203,6 +196,7 @@ function CheckoutPage() {
                   onChange={(e) => update("customerEmail", e.target.value)}
                   className="input-field"
                   placeholder="you@example.com"
+                  type="email"
                 />
               </Field>
             </Card>
@@ -210,7 +204,7 @@ function CheckoutPage() {
 
           {step === 1 && (
             <Card title="Хүргэлтийн мэдээлэл">
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                 <Field label="Хот / аймаг" error={errors.city}>
                   <input
                     value={form.city}
@@ -245,8 +239,8 @@ function CheckoutPage() {
 
               {freeDeliveryRemaining > 0 && sub < 500000 && (
                 <div className="p-3 rounded-xl bg-primary/5 border border-primary/20 text-xs text-muted-foreground">
-                  <strong className="text-primary">{formatMNT(freeDeliveryRemaining)}</strong> үнэтэй
-                  бүтээгдэхүүн нэмбэл хүргэлт үнэгүй.
+                  <strong className="text-primary">{formatMNT(freeDeliveryRemaining)}</strong>{" "}
+                  үнэтэй бүтээгдэхүүн нэмбэл хүргэлт үнэгүй.
                 </div>
               )}
 
@@ -261,7 +255,7 @@ function CheckoutPage() {
                           : "border-border/60 hover:border-primary/30"
                       }`}
                     >
-                      <span className="flex items-center gap-2">
+                      <span className="flex items-center gap-2 text-xs sm:text-sm">
                         <input
                           type="radio"
                           checked={form.deliveryMethod === d.id}
@@ -270,7 +264,7 @@ function CheckoutPage() {
                         />
                         {d.label}
                       </span>
-                      <span className="text-sm font-semibold">
+                      <span className="text-xs sm:text-sm font-semibold">
                         {d.fee ? formatMNT(d.fee) : "Үнэгүй"}
                       </span>
                     </label>
@@ -288,17 +282,15 @@ function CheckoutPage() {
                   return (
                     <label
                       key={p.id}
-                      className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
-                        p.disabled
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
+                      className={`flex items-center justify-between p-3 sm:p-4 rounded-xl border cursor-pointer transition-all ${
+                        p.disabled ? "opacity-50 cursor-not-allowed" : ""
                       } ${
                         form.paymentMethod === p.id
                           ? "border-primary bg-primary/5"
                           : "border-border/60 hover:border-primary/30"
                       }`}
                     >
-                      <span className="flex items-center gap-3">
+                      <span className="flex items-center gap-2 sm:gap-3">
                         <input
                           type="radio"
                           disabled={p.disabled}
@@ -306,11 +298,11 @@ function CheckoutPage() {
                           onChange={() => !p.disabled && update("paymentMethod", p.id)}
                           className="accent-primary"
                         />
-                        <Icon className="w-5 h-5 text-primary" />
-                        <span className="font-medium">{p.label}</span>
+                        <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0" />
+                        <span className="text-xs sm:text-sm font-medium">{p.label}</span>
                       </span>
                       {p.badge && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-warning/20 text-warning-foreground uppercase">
+                        <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-warning/20 text-warning-foreground uppercase shrink-0">
                           {p.badge}
                         </span>
                       )}
@@ -321,7 +313,7 @@ function CheckoutPage() {
 
               {(form.paymentMethod === "storepay_request" ||
                 form.paymentMethod === "pocket_zero_request") && (
-                <div className="mt-4 p-4 rounded-xl bg-warning/10 border border-warning/30 text-sm">
+                <div className="mt-4 p-3 sm:p-4 rounded-xl bg-warning/10 border border-warning/30 text-xs sm:text-sm">
                   Таны хүсэлтийг бид хүлээн авлаа. Манай ажилтан тантай холбогдож хуваан төлөх
                   нөхцөлийг баталгаажуулна.
                   <Field label="Регистрийн дугаар (заавал биш)">
@@ -338,7 +330,7 @@ function CheckoutPage() {
 
           {step === 3 && (
             <Card title="Баталгаажуулах">
-              <div className="space-y-3 text-sm">
+              <div className="space-y-3 text-xs sm:text-sm">
                 <Summary label="Захиалагч" value={`${form.customerName} • ${form.customerPhone}`} />
                 <Summary
                   label="Хүргэх хаяг"
@@ -354,7 +346,7 @@ function CheckoutPage() {
               {form.paymentMethod === "manual_bank" && (
                 <div className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
                   <div className="font-semibold text-sm mb-2">Дансны мэдээлэл:</div>
-                  <div className="text-sm space-y-1 text-muted-foreground">
+                  <div className="text-xs sm:text-sm space-y-1 text-muted-foreground">
                     <p>Банк: Хаан банк</p>
                     <p>Дансны дугаар: XXXXXXXX</p>
                     <p>Данс эзэмшигч: Mini Motors</p>
@@ -368,52 +360,55 @@ function CheckoutPage() {
             <button
               onClick={() => setStep(Math.max(0, step - 1))}
               disabled={step === 0}
-              className="btn-outline px-5 py-3 text-sm font-medium disabled:opacity-40"
+              className="btn-outline px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-medium disabled:opacity-40"
             >
               Буцах
             </button>
             {step < steps.length - 1 ? (
               <button
                 onClick={() => validateStep() && setStep(step + 1)}
-                className="btn-primary inline-flex items-center gap-2 px-6 py-3 text-sm"
+                className="btn-primary inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm"
               >
-                Үргэлжлүүлэх <ArrowRight className="w-4 h-4" />
+                Үргэлжлүүлэх <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             ) : (
-              <button onClick={onSubmit} className="btn-primary inline-flex items-center gap-2 px-6 py-3 text-sm">
+              <button
+                onClick={onSubmit}
+                className="btn-primary inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm"
+              >
                 Захиалга баталгаажуулах
               </button>
             )}
           </div>
         </div>
 
-        {/* Order summary */}
-        <aside className="h-fit p-6 rounded-2xl border border-border/60 bg-card sticky top-28">
-          <h3 className="font-display text-lg font-bold mb-4">Захиалга</h3>
+        {/* Order summary sidebar */}
+        <aside className="h-fit p-5 sm:p-6 rounded-2xl border border-border/60 bg-card sm:sticky sm:top-28">
+          <h3 className="font-display text-base sm:text-lg font-bold mb-4">Захиалга</h3>
           <div className="space-y-2 mb-4 max-h-60 overflow-y-auto">
             {items.map((i) => (
-              <div key={i.productId} className="flex gap-3 text-sm">
+              <div key={i.productId} className="flex gap-2 sm:gap-3 text-xs sm:text-sm">
                 <img
                   src={i.image}
                   alt={i.name}
-                  className="w-12 h-12 rounded-lg bg-secondary/80 object-contain"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-secondary/80 object-contain shrink-0"
                 />
                 <div className="flex-1 min-w-0">
                   <div className="font-medium line-clamp-1">{i.name}</div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-[11px] sm:text-xs text-muted-foreground">
                     {i.quantity} × {formatMNT(i.unitPrice)}
                   </div>
                 </div>
-                <div className="font-semibold shrink-0">
+                <div className="font-semibold shrink-0 text-xs sm:text-sm">
                   {formatMNT(i.unitPrice * i.quantity)}
                 </div>
               </div>
             ))}
           </div>
-          <div className="border-t border-border/60 pt-3 space-y-2 text-sm">
+          <div className="border-t border-border/60 pt-3 space-y-2 text-xs sm:text-sm">
             <SummaryRow label="Дэд дүн" value={formatMNT(sub)} />
             <SummaryRow label="Хүргэлт" value={delivery.fee ? formatMNT(delivery.fee) : "Үнэгүй"} />
-            <div className="flex justify-between font-display text-lg font-bold pt-1">
+            <div className="flex justify-between font-display text-base sm:text-lg font-bold pt-1">
               <span>Нийт</span>
               <span className="text-primary">{formatMNT(total)}</span>
             </div>
@@ -426,8 +421,8 @@ function CheckoutPage() {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="p-6 rounded-2xl border border-border/60 bg-card space-y-4">
-      <h3 className="font-display text-xl font-bold">{title}</h3>
+    <div className="p-4 sm:p-6 rounded-2xl border border-border/60 bg-card space-y-4">
+      <h3 className="font-display text-lg sm:text-xl font-bold">{title}</h3>
       {children}
     </div>
   );
@@ -444,7 +439,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <div className="text-sm font-medium mb-1.5">{label}</div>
+      <div className="text-xs sm:text-sm font-medium mb-1.5">{label}</div>
       {children}
       {error && <div className="text-xs text-destructive mt-1">{error}</div>}
     </label>
@@ -454,8 +449,8 @@ function Field({
 function Summary({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-3">
-      <div className="text-muted-foreground w-32 shrink-0">{label}:</div>
-      <div className="font-medium">{value}</div>
+      <div className="text-muted-foreground w-28 sm:w-32 shrink-0 text-xs sm:text-sm">{label}:</div>
+      <div className="font-medium text-xs sm:text-sm">{value}</div>
     </div>
   );
 }
@@ -463,8 +458,8 @@ function Summary({ label, value }: { label: string; value: string }) {
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between text-muted-foreground">
-      <span>{label}</span>
-      <span>{value}</span>
+      <span className="text-xs sm:text-sm">{label}</span>
+      <span className="text-xs sm:text-sm">{value}</span>
     </div>
   );
 }
