@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Enable Nitro deployment build with Vercel preset.
+  // Without this, Nitro is only enabled inside the Lovable sandbox (Cloudflare preset),
+  // so Vercel deployments get no server handler → 404 on every route.
+  nitro: { preset: "vercel" },
 });
